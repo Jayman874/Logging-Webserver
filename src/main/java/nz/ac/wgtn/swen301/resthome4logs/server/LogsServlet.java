@@ -1,6 +1,7 @@
 package nz.ac.wgtn.swen301.resthome4logs.server;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +18,8 @@ public class LogsServlet extends HttpServlet {
 	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		PrintWriter printWriter = response.getWriter();
+		response.setContentType("application/json");
 	}
 	
 	@Override
