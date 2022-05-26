@@ -57,7 +57,7 @@ public class LogsServlet extends HttpServlet {
 		String level = json.getString("level");
 		String errorDetails = json.getString("errorDetails");
 		LogEvent le = new LogEvent(id, message, timestamp, thread, logger, level, errorDetails);
-	    Persistency.addLog(le);
+		Persistency.addLog(le);
 	}
 	
 	@Override
