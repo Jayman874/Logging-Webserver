@@ -10,19 +10,19 @@ public class Persistency {
 
 	public static List<JSONObject> DB = new ArrayList<JSONObject>();
 	
-	public List<JSONObject> getDataBase() {
+	public static List<JSONObject> getDataBase() {
 		return DB;
 	}
 	
-	public void addLog(LogEvent e) {
+	public static void addLog(LogEvent e) {
 		DB.add(format(e));
 	}
 	
-	public void removeAll() {
+	public static void removeAll() {
 		DB.clear();
 	}
 	
-	public JSONObject format(LogEvent event) {
+	public static JSONObject format(LogEvent event) {
 		JSONObject logMap = new JSONObject();
 		// uses reflection to set map to a linked hash map
 		// this is so map can be ordered when it is being parsed

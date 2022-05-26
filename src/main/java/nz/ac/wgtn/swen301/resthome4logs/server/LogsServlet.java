@@ -1,5 +1,6 @@
 package nz.ac.wgtn.swen301.resthome4logs.server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -13,7 +14,6 @@ import org.json.JSONObject;
 public class LogsServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private Persistency per = new Persistency();
 
 	public LogsServlet() {
 		
@@ -25,16 +25,13 @@ public class LogsServlet extends HttpServlet {
 		PrintWriter printWriter = response.getWriter();
 		String stringLimit = request.getParameter("limit");
 		String stringLevel = request.getParameter("level");
-		int limit = per.getDataBase().size();
+		int limit = Persistency.getDataBase().size();
 		if (stringLimit != null) {
 			limit = Integer.parseInt(stringLimit);
 		}
 		int count = 0;
 		response.setContentType("application/json");
-		for (JSONObject json : per.getDataBase()) {
-			if (count >= per.getDataBase().size()) {
-				break;
-			}
+		for (JSONObject json : Persistency.getDataBase()) {
 			if (limit > count) {
 				jsonArray.put(json);
 			}
@@ -45,12 +42,27 @@ public class LogsServlet extends HttpServlet {
 	
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		BufferedReader reader = request.getReader();
+		StringBuilder builder = new StringBuilder();
+	    String line;
+	    while((line = reader.readLine()) != null){
+	      builder.append(line);
+	    }
+	    JSONObject json = new JSONObject(builder.toString());
+	    String id = json.getString("id");
+	    String message = json.getString("message");
+	    String timestamp = json.getString("timestamp");
+	    String thread = json.getString("thread");
+	    String logger = json.getString("logger");
+	    String level = json.getString("level");
+	    String errorDetails = json.getString("errorDetails");
+	    LogEvent le = new LogEvent(id, message, timestamp, thread, logger, level, errorDetails);
+	    Persistency.addLog(le);
 	}
 	
 	@Override
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		Persistency.removeAll();
 	}
 	
 	
