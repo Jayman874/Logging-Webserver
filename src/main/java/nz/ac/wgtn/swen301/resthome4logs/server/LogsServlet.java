@@ -42,8 +42,8 @@ public class LogsServlet extends HttpServlet {
 	
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		BufferedReader reader = request.getReader();
-		StringBuilder builder = new StringBuilder();
+	    BufferedReader reader = request.getReader();
+	    StringBuilder builder = new StringBuilder();
 	    String line;
 	    while((line = reader.readLine()) != null){
 	      builder.append(line);

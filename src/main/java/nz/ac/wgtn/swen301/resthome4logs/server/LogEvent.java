@@ -45,6 +45,6 @@ public class LogEvent {
 	}
 
 	public String getErrorDetails() {
-		return errorDetails;
+		return this.errorDetails;
 	}
 }
