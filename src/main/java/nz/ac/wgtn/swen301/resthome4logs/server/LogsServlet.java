@@ -42,21 +42,21 @@ public class LogsServlet extends HttpServlet {
 	
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    BufferedReader reader = request.getReader();
-	    StringBuilder builder = new StringBuilder();
-	    String line;
-	    while((line = reader.readLine()) != null){
-	      builder.append(line);
-	    }
-	    JSONObject json = new JSONObject(builder.toString());
-	    String id = json.getString("id");
-	    String message = json.getString("message");
-	    String timestamp = json.getString("timestamp");
-	    String thread = json.getString("thread");
-	    String logger = json.getString("logger");
-	    String level = json.getString("level");
-	    String errorDetails = json.getString("errorDetails");
-	    LogEvent le = new LogEvent(id, message, timestamp, thread, logger, level, errorDetails);
+		BufferedReader reader = request.getReader();
+		StringBuilder builder = new StringBuilder();
+		String line;
+		while((line = reader.readLine()) != null){
+			builder.append(line);
+		}
+		JSONObject json = new JSONObject(builder.toString());
+		String id = json.getString("id");
+		String message = json.getString("message");
+		String timestamp = json.getString("timestamp");
+		String thread = json.getString("thread");
+		String logger = json.getString("logger");
+		String level = json.getString("level");
+		String errorDetails = json.getString("errorDetails");
+		LogEvent le = new LogEvent(id, message, timestamp, thread, logger, level, errorDetails);
 	    Persistency.addLog(le);
 	}
 	
