@@ -10,12 +10,16 @@ public class Persistency {
 
 	public static List<JSONObject> DB = new ArrayList<JSONObject>();
 	
-	public static List<JSONObject> getDataBase() {
+	public static List<JSONObject> getDatabase() {
 		return DB;
 	}
 	
 	public static void addLog(LogEvent e) {
 		DB.add(format(e));
+	}
+	
+	public static int getDatabaseSize() {
+		return DB.size();
 	}
 	
 	public static void removeAll() {

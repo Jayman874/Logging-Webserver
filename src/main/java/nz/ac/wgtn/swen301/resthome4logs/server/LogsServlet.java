@@ -25,13 +25,13 @@ public class LogsServlet extends HttpServlet {
 		PrintWriter printWriter = response.getWriter();
 		String stringLimit = request.getParameter("limit");
 		String stringLevel = request.getParameter("level");
-		int limit = Persistency.getDataBase().size();
+		int limit = Persistency.getDatabaseSize();
 		if (stringLimit != null) {
 			limit = Integer.parseInt(stringLimit);
 		}
 		int count = 0;
 		response.setContentType("application/json");
-		for (JSONObject json : Persistency.getDataBase()) {
+		for (JSONObject json : Persistency.getDatabase()) {
 			if (limit > count) {
 				jsonArray.put(json);
 			}
