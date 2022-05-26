@@ -23,18 +23,29 @@ public class LogsServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONArray jsonArray = new JSONArray();
 		PrintWriter printWriter = response.getWriter();
-		String limit = request.getParameter("limit");
-		String level = request.getParameter("level");
+		String stringLimit = request.getParameter("limit");
+		String stringLevel = request.getParameter("level");
+		int limit = per.getDataBase().size();
+		if (stringLimit != null) {
+			limit = Integer.parseInt(stringLimit);
+		}
+		int count = 0;
 		response.setContentType("application/json");
 		for (JSONObject json : per.getDataBase()) {
-			jsonArray.put(json);
+			if (count >= per.getDataBase().size()) {
+				break;
+			}
+			if (limit > count) {
+				jsonArray.put(json);
+			}
+			count++;
 		}
 		printWriter.println(jsonArray.toString(2));
 	}
 	
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 	}
 	
 	@Override
