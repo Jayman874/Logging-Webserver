@@ -7,6 +7,8 @@ import java.util.List;
 import org.json.JSONObject;
 
 public class Persistency {
+	
+	public static enum Level {ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF};
 
 	public static List<JSONObject> DB = new ArrayList<JSONObject>();
 	
@@ -46,6 +48,15 @@ public class Persistency {
 		logMap.put("level" , event.getLevel());
 		logMap.put("errorDetails" , event.getErrorDetails());
 		return logMap;
+	}
+	
+	public static boolean contains(String logLevel) {
+		for (Persistency.Level level : Persistency.Level.values()) {
+			if (level.name().equals(logLevel)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
