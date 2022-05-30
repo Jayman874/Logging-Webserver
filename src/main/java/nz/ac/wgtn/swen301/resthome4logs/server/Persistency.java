@@ -51,7 +51,7 @@ public class Persistency {
 	}
 	
 	public static boolean contains(String logLevel) {
-		for (Persistency.Level level : Persistency.Level.values()) {
+		for (Level level : Level.values()) {
 			if (level.name().equals(logLevel)) {
 				return true;
 			}

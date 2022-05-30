@@ -33,6 +33,7 @@ public class LogsServlet extends HttpServlet {
 		if (stringLevel != null) {
 			if (!(Persistency.contains(stringLevel))) {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+				return;
 			}
 			for (Persistency.Level level : Persistency.Level.values()){
 				String string = level.name();
