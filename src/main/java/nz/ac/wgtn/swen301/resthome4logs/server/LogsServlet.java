@@ -3,8 +3,12 @@ package nz.ac.wgtn.swen301.resthome4logs.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -94,6 +98,10 @@ public class LogsServlet extends HttpServlet {
 			String logger = json.getString("logger");
 			String level = json.getString("level");
 			String errorDetails = json.getString("errorDetails");
+			DateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		    UUID.fromString(id);
+			format.setLenient(false);
+			format.parse(timestamp);
 			for (JSONObject obj : Persistency.getDatabase()) {
 				if (obj.getString("id").equals(id)) {
 					response.sendError(HttpServletResponse.SC_CONFLICT);
@@ -102,7 +110,7 @@ public class LogsServlet extends HttpServlet {
 			}
 			LogEvent le = new LogEvent(id, message, timestamp, thread, logger, level, errorDetails);
 			Persistency.addLog(le);
-		} catch (JSONException e) {
+		} catch (JSONException | ParseException | IllegalArgumentException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		response.setStatus(HttpServletResponse.SC_CREATED);

@@ -3,7 +3,6 @@ package nz.ac.wgtn.swen301.resthome4logs.server;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
@@ -95,7 +94,7 @@ public class TestGetLogs {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		LogsServlet servlet = new LogsServlet();
 		JSONObject json = new JSONObject(jsonString);
-		request.setContent(json.toString().getBytes(StandardCharsets.UTF_8));
+		request.setContent(json.toString().getBytes());
 		servlet.doPost(request, response);
 		request.setParameter("limit", "5");
 		request.setParameter("level", "ALL");
@@ -110,5 +109,6 @@ public class TestGetLogs {
 		assertEquals(obj.get("logger"), "com.example.Foo");
 		assertEquals(obj.get("level"), "DEBUG");
 		assertEquals(obj.get("errorDetails"), "string");
+		Persistency.getDatabase().clear();
 	}
 }
