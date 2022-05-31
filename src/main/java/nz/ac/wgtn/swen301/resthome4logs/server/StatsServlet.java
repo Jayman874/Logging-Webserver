@@ -60,5 +60,6 @@ public class StatsServlet extends HttpServlet {
 			printWriter.println("</tr>");
 		}
 		printWriter.println("</table>");
+		response.setStatus(HttpServletResponse.SC_OK);
 	}
 }
