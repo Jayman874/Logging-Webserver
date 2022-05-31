@@ -34,43 +34,45 @@ public class LogsServlet extends HttpServlet {
 		int limit = Persistency.getDatabaseSize();
 		int logLevel = -1;
 		int numLevels = Persistency.Level.values().length-1;
-		if (stringLevel != null) {
-			if (!(Persistency.contains(stringLevel))) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-				return;
-			}
-			for (Persistency.Level level : Persistency.Level.values()){
-				String string = level.name();
-				if (string.equals(stringLevel)) {
-					logLevel = level.ordinal();
-					break;
-				}
-			}
-			while (logLevel < numLevels) {
-				for (JSONObject json : Persistency.getDatabase()) {
-					if (json.getString("level").equals(Persistency.Level.values()[logLevel].name())) {
-						jsonList.add(json);
-					}
-				}
-				logLevel++;
-			}
-		} else {
-			for (JSONObject json : Persistency.getDatabase()) {
-				jsonList.add(json);
-			}
-		}
-		if (stringLimit != null) {
-			try {
-				limit = Integer.parseInt(stringLimit);
-			} catch (NumberFormatException e) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			}
-		}
-		if (limit < 0) {
+		if (stringLimit == null || stringLevel == null) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		try {
+			limit = Integer.parseInt(stringLimit);
+		} catch (NumberFormatException e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		if (!(Persistency.contains(stringLevel)) || limit < 0) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		for (Persistency.Level level : Persistency.Level.values()){
+			String string = level.name();
+			if (string.equals(stringLevel)) {
+				logLevel = level.ordinal();
+				break;
+			}
+		}
+		while (logLevel < numLevels) {
+			for (JSONObject json : Persistency.getDatabase()) {
+				if (json.getString("level").equals(Persistency.Level.values()[logLevel].name())) {
+					jsonList.add(json);
+				}
+			}
+			logLevel++;
 		}
 		int count = 0;
 		response.setContentType("application/json");
+		DateFormat date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        jsonList.sort((d1, d2) -> {
+            try {
+                return date.parse((d2.getString("timestamp"))).compareTo(date.parse(d1.getString("timestamp")));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
 		for (JSONObject json : jsonList) {
 			if (limit > count) {
 				jsonArray.put(json);
@@ -80,7 +82,7 @@ public class LogsServlet extends HttpServlet {
 		response.setStatus(HttpServletResponse.SC_OK);
 		printWriter.println(jsonArray.toString(2));
 	}
-	
+
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
@@ -102,6 +104,10 @@ public class LogsServlet extends HttpServlet {
 		    UUID.fromString(id);
 			format.setLenient(false);
 			format.parse(timestamp);
+			if (!(Persistency.contains(level))) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
 			for (JSONObject obj : Persistency.getDatabase()) {
 				if (obj.getString("id").equals(id)) {
 					response.sendError(HttpServletResponse.SC_CONFLICT);

@@ -66,6 +66,10 @@ public class TestPostLogs {
 		request.setContent(json2.toString().getBytes());
 		servlet.doPost(request, response);
 		assertEquals(response.getStatus(), HttpServletResponse.SC_CREATED);
+		request.setParameter("limit", "1");
+		request.setParameter("level", "ALL");
+		servlet.doGet(request, response);
+		assertEquals(response.getStatus(), HttpServletResponse.SC_OK);
 		Persistency.getDatabase().clear();
 	}
 	
@@ -103,7 +107,7 @@ public class TestPostLogs {
 	            "    \"thread\": \"main\",\n" +
 	            "    \"logger\": \"com.example.Foo\",\n" +
 	            "    \"level\": \"DEBUG\",\n" +
-	            "    \"errorDetails\": \"string\"\n" +
+	            "    \"error\": \"string\"\n" +
 	            "  }";
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
@@ -141,10 +145,31 @@ public class TestPostLogs {
 		String jsonString = "  {\n" +
 	            "    \"id\": \"d290f1ee-6c5fnjdecbjbjbffedjwl c\",\n" +
 	            "    \"message\": \"application started\",\n" +
-	            "    \"timestamp\": \"2022-04-05 10:12:00\",\n" +
+	            "    \"timestamp\": \"04-05-2022 10:12:00\",\n" +
 	            "    \"thread\": \"main\",\n" +
 	            "    \"logger\": \"com.example.Foo\",\n" +
 	            "    \"level\": \"DEBUG\",\n" +
+	            "    \"errorDetails\": \"string\"\n" +
+	            "  }";
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		LogsServlet servlet = new LogsServlet();
+		JSONObject json = new JSONObject(jsonString);
+		request.setContent(json.toString().getBytes());
+		servlet.doPost(request, response);
+		assertEquals(response.getStatus(), HttpServletResponse.SC_BAD_REQUEST);
+		Persistency.getDatabase().clear();
+	}
+	
+	@Test
+	public void testPostLogInvalidLogLevel() throws ServletException, IOException {
+		String jsonString = "  {\n" +
+	            "    \"id\": \"d290f1ee-6c54-4b01-90e6-d701748f0851\",\n" +
+	            "    \"message\": \"application started\",\n" +
+	            "    \"timestamp\": \"04-05-2021 10:12:00\",\n" +
+	            "    \"thread\": \"main\",\n" +
+	            "    \"logger\": \"com.example.Foo\",\n" +
+	            "    \"level\": \"HELLO\",\n" +
 	            "    \"errorDetails\": \"string\"\n" +
 	            "  }";
 		MockHttpServletRequest request = new MockHttpServletRequest();

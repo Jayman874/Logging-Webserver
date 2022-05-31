@@ -14,12 +14,43 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 public class TestGetLogs {
-
+	
 	@Test
-	public void testLogContentType() throws ServletException, IOException {
+	public void testGetLogNoParameters() throws ServletException, IOException {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		LogsServlet servlet = new LogsServlet();
+		servlet.doGet(request, response);
+		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+	}
+	
+	@Test
+	public void testGetLogOneParameterLimit() throws ServletException, IOException {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		LogsServlet servlet = new LogsServlet();
+		request.setParameter("limit", "5");
+		servlet.doGet(request, response);
+		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+	}
+	
+	@Test
+	public void testGetLogOneParameterLevel() throws ServletException, IOException {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		LogsServlet servlet = new LogsServlet();
+		request.setParameter("level", "WARN");
+		servlet.doGet(request, response);
+		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+	}
+
+	@Test
+	public void testGetLogContentType() throws ServletException, IOException {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		LogsServlet servlet = new LogsServlet();
+		request.setParameter("limit", "5");
+		request.setParameter("level", "WARN");
 		servlet.doGet(request, response);
 		assertEquals("application/json", response.getContentType());
 	}
