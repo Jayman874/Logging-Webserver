@@ -2,8 +2,9 @@ package nz.ac.wgtn.swen301.resthome4logs.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,26 +21,44 @@ public class StatsServlet extends HttpServlet {
 	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<String> loggers = new ArrayList<String>();
+		response.setContentType("text/html");
 		PrintWriter printWriter = response.getWriter();
-		for (JSONObject obj : Persistency.getDatabase()) {
-			String logger = obj.getString("logger");
-			if (!(loggers.contains(logger))) {
-				loggers.add(logger);
+		HashMap<String, HashMap<String, Integer>> table = new LinkedHashMap<>();
+		for (JSONObject json : Persistency.getDatabase()) {
+			String loggerName = json.getString("logger");
+			String level = json.getString("level");
+			HashMap<String, Integer> levels;
+			if (table.containsKey(loggerName)) {
+				levels = table.get(loggerName);
+			} else {
+				levels = new LinkedHashMap<>();
+				for (Persistency.Level l : Persistency.Level.values()) {
+					levels.put(l.name(), 0);
+				}
 			}
+			for (Entry<String, Integer> entry : levels.entrySet()) {
+			    String key = entry.getKey();
+			    if (level.equals(key)) {
+			    	levels.put(key, levels.get(key) + 1);
+			    }
+			}
+			table.put(loggerName, levels);
 		}
-		printWriter.println("<table>");
-		printWriter.println("<tr>");
+		printWriter.println("<table border=1px black solid; style=border-collapse:collapse; table-layout:fixed; width:100%;>");
 		printWriter.println("<th>logger</th>");
-		printWriter.println("<th>ALL</th>");
-		printWriter.println("<th>TRACE</th>");
-		printWriter.println("<th>DEBUG</th>");
-		printWriter.println("<th>INFO</th>");
-		printWriter.println("<th>WARN</th>");
-		printWriter.println("<th>ERROR</th>");
-		printWriter.println("<th>FATAL</th>");
-		printWriter.println("<th>OFF</th>");
-		printWriter.println("</tr>");
+		for (Persistency.Level level : Persistency.Level.values()) {
+			printWriter.println("<th>" + level.name() + "</th>");
+		}
+		for (Entry<String, HashMap<String, Integer>> entry : table.entrySet()) {
+			printWriter.println("<tr>");
+		    printWriter.println("<td style=width:10%;>" + entry.getKey() + "</td>");
+		    for (Persistency.Level level : Persistency.Level.values()) {
+				if (entry.getValue().containsKey(level.name())) {
+					printWriter.println("<td style=width:10%;>" + entry.getValue().get(level.name()) + "</td>");
+				}
+			} 
+			printWriter.println("</tr>");
+		}
 		printWriter.println("</table>");
 	}
 }

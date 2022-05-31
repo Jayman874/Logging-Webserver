@@ -33,7 +33,7 @@ public class LogsServlet extends HttpServlet {
 		String stringLevel = request.getParameter("level");
 		int limit = Persistency.getDatabaseSize();
 		int logLevel = -1;
-		int numLevels = Persistency.Level.values().length-1;
+		int numLevels = Persistency.Level.values().length;
 		if (stringLimit == null || stringLevel == null) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
@@ -42,8 +42,9 @@ public class LogsServlet extends HttpServlet {
 			limit = Integer.parseInt(stringLimit);
 		} catch (NumberFormatException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
 		}
-		if (!(Persistency.contains(stringLevel)) || limit < 0) {
+		if ((!Persistency.contains(stringLevel)) || limit <= 0 || limit > 2147483647) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}

@@ -89,6 +89,17 @@ public class TestGetLogs {
 	}
 	
 	@Test
+	public void testGetInvalidLimitParameter3() throws ServletException, IOException {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		LogsServlet servlet = new LogsServlet();
+		request.setParameter("limit", "2147483648");
+		request.setParameter("level", "DEBUG");
+		servlet.doGet(request, response);
+		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+	}
+	
+	@Test
 	public void testGetInvalidLevelParameter() throws ServletException, IOException {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
