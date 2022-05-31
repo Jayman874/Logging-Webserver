@@ -52,9 +52,9 @@ public class StatsServlet extends HttpServlet {
 		for (Entry<String, HashMap<String, Integer>> entry : table.entrySet()) {
 			printWriter.println("<tr>");
 			printWriter.println("<td style=width:10%;>" + entry.getKey() + "</td>");
-		    for (Persistency.Level level : Persistency.Level.values()) {
-		    	if (entry.getValue().containsKey(level.name())) {
-		    		printWriter.println("<td style=width:10%;>" + entry.getValue().get(level.name()) + "</td>");
+			for (Persistency.Level level : Persistency.Level.values()) {
+				if (entry.getValue().containsKey(level.name())) {
+					printWriter.println("<td style=width:10%;>" + entry.getValue().get(level.name()) + "</td>");
 				}
 			} 
 			printWriter.println("</tr>");
