@@ -72,8 +72,8 @@ public class StatsXLSServlet extends HttpServlet {
 			}
 			rowNumber++;
 		}
+		response.setStatus(HttpServletResponse.SC_OK);
 		xlsBook.write(outputStream);
 		xlsBook.close();
-		response.setStatus(HttpServletResponse.SC_OK);
 	}
 }

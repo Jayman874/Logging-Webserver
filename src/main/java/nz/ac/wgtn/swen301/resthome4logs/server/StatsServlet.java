@@ -45,10 +45,12 @@ public class StatsServlet extends HttpServlet {
 			table.put(loggerName, levels);
 		}
 		printWriter.println("<table border=1px black solid; style=border-collapse:collapse; table-layout:fixed; width:100%;>");
+		printWriter.println("<tr>");
 		printWriter.println("<th>logger</th>");
 		for (Persistency.Level level : Persistency.Level.values()) {
 			printWriter.println("<th>" + level.name() + "</th>");
 		}
+		printWriter.println("</tr>");
 		for (Entry<String, HashMap<String, Integer>> entry : table.entrySet()) {
 			printWriter.println("<tr>");
 			printWriter.println("<td style=width:10%;>" + entry.getKey() + "</td>");
