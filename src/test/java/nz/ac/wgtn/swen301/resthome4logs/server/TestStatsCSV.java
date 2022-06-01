@@ -16,6 +16,56 @@ import nz.ac.wgtn.swen301.resthome4logs.server.Persistency.Level;
 
 public class TestStatsCSV {
 	
+	private String jsonString = "  {\n" +
+            "    \"id\": \"d290f1ee-6c54-4b01-90e6-d701748f0851\",\n" +
+            "    \"message\": \"application started\",\n" +
+            "    \"timestamp\": \"04-05-2021 10:12:00\",\n" +
+            "    \"thread\": \"main\",\n" +
+            "    \"logger\": \"com.example.Foo\",\n" +
+            "    \"level\": \"DEBUG\",\n" +
+            "    \"errorDetails\": \"string\"\n" +
+            "  }";
+	
+	private String jsonString2 = "  {\n" +
+            "    \"id\": \"d290f1ee-6c54-4b01-90e6-d701748f0851\",\n" +
+            "    \"message\": \"application started\",\n" +
+            "    \"timestamp\": \"04-05-2021 10:12:00\",\n" +
+            "    \"thread\": \"main\",\n" +
+            "    \"logger\": \"com.example.Foo\",\n" +
+            "    \"level\": \"TRACE\",\n" +
+            "    \"errorDetails\": \"string\"\n" +
+            "  }";
+	
+	private String jsonString3 = "  {\n" +
+            "    \"id\": \"d290f1ee-6c54-4b01-90e6-d701748f0951\",\n" +
+            "    \"message\": \"application started\",\n" +
+            "    \"timestamp\": \"04-05-2021 10:12:00\",\n" +
+            "    \"thread\": \"main\",\n" +
+            "    \"logger\": \"com.example.Foo\",\n" +
+            "    \"level\": \"TRACE\",\n" +
+            "    \"errorDetails\": \"string\"\n" +
+            "  }";
+	
+	private String jsonString4 = "  {\n" +
+            "    \"id\": \"d290f1ee-6c54-4b01-90e6-d701748f0951\",\n" +
+            "    \"message\": \"application started\",\n" +
+            "    \"timestamp\": \"04-05-2021 10:12:00\",\n" +
+            "    \"thread\": \"main\",\n" +
+            "    \"logger\": \"com.example.Test\",\n" +
+            "    \"level\": \"WARN\",\n" +
+            "    \"errorDetails\": \"string\"\n" +
+            "  }";
+	
+	private String jsonString5 = "  {\n" +
+            "    \"id\": \"d290f1ee-6c54-4b01-90e6-d701748f0952\",\n" +
+            "    \"message\": \"application started\",\n" +
+            "    \"timestamp\": \"04-05-2021 10:12:00\",\n" +
+            "    \"thread\": \"main\",\n" +
+            "    \"logger\": \"com.example.Test\",\n" +
+            "    \"level\": \"INFO\",\n" +
+            "    \"errorDetails\": \"string\"\n" +
+            "  }";
+	
 	@Test
 	public void testCSVServletResponseValid() throws ServletException, IOException {
 		MockHttpServletRequest request = new MockHttpServletRequest();
@@ -36,15 +86,6 @@ public class TestStatsCSV {
 	
 	@Test
 	public void testCSVServletValid() throws ServletException, IOException {
-		String jsonString = "  {\n" +
-	            "    \"id\": \"d290f1ee-6c54-4b01-90e6-d701748f0851\",\n" +
-	            "    \"message\": \"application started\",\n" +
-	            "    \"timestamp\": \"04-05-2021 10:12:00\",\n" +
-	            "    \"thread\": \"main\",\n" +
-	            "    \"logger\": \"com.example.Foo\",\n" +
-	            "    \"level\": \"DEBUG\",\n" +
-	            "    \"errorDetails\": \"string\"\n" +
-	            "  }";
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		LogsServlet servlet = new LogsServlet();
@@ -77,30 +118,12 @@ public class TestStatsCSV {
 	
 	@Test
 	public void testCSVServletValid2() throws ServletException, IOException {
-		String jsonString = "  {\n" +
-	            "    \"id\": \"d290f1ee-6c54-4b01-90e6-d701748f0851\",\n" +
-	            "    \"message\": \"application started\",\n" +
-	            "    \"timestamp\": \"04-05-2021 10:12:00\",\n" +
-	            "    \"thread\": \"main\",\n" +
-	            "    \"logger\": \"com.example.Foo\",\n" +
-	            "    \"level\": \"TRACE\",\n" +
-	            "    \"errorDetails\": \"string\"\n" +
-	            "  }";
-		String jsonString2 = "  {\n" +
-	            "    \"id\": \"d290f1ee-6c54-4b01-90e6-d701748f0951\",\n" +
-	            "    \"message\": \"application started\",\n" +
-	            "    \"timestamp\": \"04-05-2021 10:12:00\",\n" +
-	            "    \"thread\": \"main\",\n" +
-	            "    \"logger\": \"com.example.Foo\",\n" +
-	            "    \"level\": \"TRACE\",\n" +
-	            "    \"errorDetails\": \"string\"\n" +
-	            "  }";
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		LogsServlet servlet = new LogsServlet();
 		StatsCSVServlet csvServlet = new StatsCSVServlet();
-		JSONObject json = new JSONObject(jsonString);
-		JSONObject json2 = new JSONObject(jsonString2);
+		JSONObject json = new JSONObject(jsonString2);
+		JSONObject json2 = new JSONObject(jsonString3);
 		request.setContent(json.toString().getBytes());
 		servlet.doPost(request, response);
 		assertEquals(response.getStatus(), HttpServletResponse.SC_CREATED);
@@ -130,40 +153,13 @@ public class TestStatsCSV {
 	
 	@Test
 	public void testCSVServletValid3() throws ServletException, IOException {
-		String jsonString = "  {\n" +
-	            "    \"id\": \"d290f1ee-6c54-4b01-90e6-d701748f0851\",\n" +
-	            "    \"message\": \"application started\",\n" +
-	            "    \"timestamp\": \"04-05-2021 10:12:00\",\n" +
-	            "    \"thread\": \"main\",\n" +
-	            "    \"logger\": \"com.example.Foo\",\n" +
-	            "    \"level\": \"DEBUG\",\n" +
-	            "    \"errorDetails\": \"string\"\n" +
-	            "  }";
-		String jsonString2 = "  {\n" +
-	            "    \"id\": \"d290f1ee-6c54-4b01-90e6-d701748f0951\",\n" +
-	            "    \"message\": \"application started\",\n" +
-	            "    \"timestamp\": \"04-05-2021 10:12:00\",\n" +
-	            "    \"thread\": \"main\",\n" +
-	            "    \"logger\": \"com.example.Test\",\n" +
-	            "    \"level\": \"WARN\",\n" +
-	            "    \"errorDetails\": \"string\"\n" +
-	            "  }";
-		String jsonString3 = "  {\n" +
-	            "    \"id\": \"d290f1ee-6c54-4b01-90e6-d701748f0952\",\n" +
-	            "    \"message\": \"application started\",\n" +
-	            "    \"timestamp\": \"04-05-2021 10:12:00\",\n" +
-	            "    \"thread\": \"main\",\n" +
-	            "    \"logger\": \"com.example.Test\",\n" +
-	            "    \"level\": \"INFO\",\n" +
-	            "    \"errorDetails\": \"string\"\n" +
-	            "  }";
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		LogsServlet servlet = new LogsServlet();
 		StatsCSVServlet csvServlet = new StatsCSVServlet();
 		JSONObject json = new JSONObject(jsonString);
-		JSONObject json2 = new JSONObject(jsonString2);
-		JSONObject json3 = new JSONObject(jsonString3);
+		JSONObject json2 = new JSONObject(jsonString4);
+		JSONObject json3 = new JSONObject(jsonString5);
 		request.setContent(json.toString().getBytes());
 		servlet.doPost(request, response);
 		assertEquals(response.getStatus(), HttpServletResponse.SC_CREATED);
