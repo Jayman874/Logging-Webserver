@@ -18,6 +18,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import nz.ac.wgtn.swen301.resthome4logs.server.Persistency.Level;
+
 public class LogsServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -33,7 +35,7 @@ public class LogsServlet extends HttpServlet {
 		String stringLevel = request.getParameter("level");
 		int limit = Persistency.getDatabaseSize();
 		int logLevel = -1;
-		int numLevels = Persistency.Level.values().length;
+		int numLevels = Level.values().length;
 		if (stringLimit == null || stringLevel == null) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
@@ -48,7 +50,7 @@ public class LogsServlet extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
-		for (Persistency.Level level : Persistency.Level.values()){
+		for (Level level : Level.values()){
 			String string = level.name();
 			if (string.equals(stringLevel)) {
 				logLevel = level.ordinal();
@@ -57,7 +59,7 @@ public class LogsServlet extends HttpServlet {
 		}
 		while (logLevel < numLevels) {
 			for (JSONObject json : Persistency.getDatabase()) {
-				if (json.getString("level").equals(Persistency.Level.values()[logLevel].name())) {
+				if (json.getString("level").equals(Level.values()[logLevel].name())) {
 					jsonList.add(json);
 				}
 			}
@@ -119,6 +121,7 @@ public class LogsServlet extends HttpServlet {
 			Persistency.addLog(le);
 		} catch (JSONException | ParseException | IllegalArgumentException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
 		}
 		response.setStatus(HttpServletResponse.SC_CREATED);
 	}

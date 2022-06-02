@@ -17,6 +17,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONObject;
 
+import nz.ac.wgtn.swen301.resthome4logs.server.Persistency.Level;
+
 public class StatsXLSServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -27,22 +29,22 @@ public class StatsXLSServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/vnd.ms-excel");
 		ServletOutputStream outputStream = response.getOutputStream();
-		HashMap<String, HashMap<String, Integer>> table = new LinkedHashMap<>();
+		HashMap<String, HashMap<Level, Integer>> table = new LinkedHashMap<>();
 		for (JSONObject json : Persistency.getDatabase()) {
 			String loggerName = json.getString("logger");
 			String level = json.getString("level");
-			HashMap<String, Integer> levels;
+			HashMap<Level, Integer> levels;
 			if (table.containsKey(loggerName)) {
 				levels = table.get(loggerName);
 			} else {
 				levels = new LinkedHashMap<>();
-				for (Persistency.Level l : Persistency.Level.values()) {
-					levels.put(l.name(), 0);
+				for (Level l : Level.values()) {
+					levels.put(l, 0);
 				}
 			}
-			for (Entry<String, Integer> entry : levels.entrySet()) {
-			    String key = entry.getKey();
-			    if (level.equals(key)) {
+			for (Entry<Level, Integer> entry : levels.entrySet()) {
+			    Level key = entry.getKey();
+			    if (level.equals(key.name())) {
 			    	levels.put(key, levels.get(key) + 1);
 			    }
 			}
@@ -55,19 +57,19 @@ public class StatsXLSServlet extends HttpServlet {
 		int cellNumber = 1;
 		int rowNumber = 1;
 		cell.setCellValue("logger");
-		for (Persistency.Level level : Persistency.Level.values()) {
+		for (Level level : Level.values()) {
 			cell = row.createCell(cellNumber++);
 			cell.setCellValue(level.name());
 		}
-		for (Entry<String, HashMap<String, Integer>> entry : table.entrySet()) {
+		for (Entry<String, HashMap<Level, Integer>> entry : table.entrySet()) {
 			cellNumber = 0;
 			row = sheet.createRow(rowNumber);
 			cell = row.createCell(cellNumber++);
 			cell.setCellValue(entry.getKey());
-			for (Persistency.Level level : Persistency.Level.values()) {
-				if (entry.getValue().containsKey(level.name())) {
+			for (Level level : Level.values()) {
+				if (entry.getValue().containsKey(level)) {
 					cell = row.createCell(cellNumber++);
-					cell.setCellValue(entry.getValue().get(level.name()));
+					cell.setCellValue(entry.getValue().get(level));
 				}
 			}
 			rowNumber++;

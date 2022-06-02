@@ -124,7 +124,7 @@ public class TestStatsXLS {
 		XSSFSheet sheet = xlsBook.getSheet("stats");
 		int row = 0;
 		assertEquals(sheet.getRow(row).getCell(0).toString(), "logger");
-		Level[] level = Persistency.Level.values();
+		Level[] level = Level.values();
 		for (int i = 1; i < sheet.getRow(row).getLastCellNum(); i++) {
 			assertEquals(sheet.getRow(row).getCell(i).toString(), level[i-1].name());
 		}
@@ -132,7 +132,7 @@ public class TestStatsXLS {
 		assertEquals(sheet.getRow(row).getCell(0).toString(), json.getString("logger"));
 		for (int i = 1; i < sheet.getRow(row).getLastCellNum(); i++) {
 			int value = (int) sheet.getRow(row).getCell(i).getNumericCellValue();
-			if (i != Persistency.Level.valueOf(json.getString("level")).ordinal()+1) {
+			if (i != Level.valueOf(json.getString("level")).ordinal()+1) {
 				assertEquals(value, 0);
 			} else {
 				assertEquals(value, 1);
@@ -164,7 +164,7 @@ public class TestStatsXLS {
 		XSSFSheet sheet = xlsBook.getSheet("stats");
 		int row = 0;
 		assertEquals(sheet.getRow(row).getCell(0).toString(), "logger");
-		Level[] level = Persistency.Level.values();
+		Level[] level = Level.values();
 		for (int i = 1; i < sheet.getRow(row).getLastCellNum(); i++) {
 			assertEquals(sheet.getRow(row).getCell(i).toString(), level[i-1].name());
 		}
@@ -172,7 +172,7 @@ public class TestStatsXLS {
 		assertEquals(sheet.getRow(row).getCell(0).toString(), json.getString("logger"));
 		for (int i = 1; i < sheet.getRow(row).getLastCellNum(); i++) {
 			int value = (int) sheet.getRow(row).getCell(i).getNumericCellValue();
-			if (i != Persistency.Level.valueOf(json.getString("level")).ordinal()+1) {
+			if (i != Level.valueOf(json.getString("level")).ordinal()+1) {
 				assertEquals(value, 0);
 			} else {
 				assertEquals(value, 2);
@@ -208,7 +208,7 @@ public class TestStatsXLS {
 		XSSFSheet sheet = xlsBook.getSheet("stats");
 		int row = 0;
 		assertEquals(sheet.getRow(row).getCell(0).toString(), "logger");
-		Level[] level = Persistency.Level.values();
+		Level[] level = Level.values();
 		for (int i = 1; i < sheet.getRow(row).getLastCellNum(); i++) {
 			assertEquals(sheet.getRow(row).getCell(i).toString(), level[i-1].name());
 		}
@@ -216,7 +216,7 @@ public class TestStatsXLS {
 		assertEquals(sheet.getRow(row).getCell(0).toString(), json.getString("logger"));
 		for (int i = 1; i < sheet.getRow(row).getLastCellNum(); i++) {
 			int value = (int) sheet.getRow(row).getCell(i).getNumericCellValue();
-			if (i != Persistency.Level.valueOf(json.getString("level")).ordinal()+1) {
+			if (i != Level.valueOf(json.getString("level")).ordinal()+1) {
 				assertEquals(value, 0);
 			} else {
 				assertEquals(value, 1);
@@ -226,8 +226,8 @@ public class TestStatsXLS {
 		assertEquals(sheet.getRow(row).getCell(0).toString(), json2.getString("logger"));
 		for (int i = 1; i < sheet.getRow(row).getLastCellNum(); i++) {
 			int value = (int) sheet.getRow(row).getCell(i).getNumericCellValue();
-			if (i == Persistency.Level.valueOf(json2.getString("level")).ordinal()+1 
-					|| i == Persistency.Level.valueOf(json3.getString("level")).ordinal()+1) {
+			if (i == Level.valueOf(json2.getString("level")).ordinal()+1 
+					|| i == Level.valueOf(json3.getString("level")).ordinal()+1) {
 				assertEquals(value, 1);
 			} else {
 				assertEquals(value, 0);

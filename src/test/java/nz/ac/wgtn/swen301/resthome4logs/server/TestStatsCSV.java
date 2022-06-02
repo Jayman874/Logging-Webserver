@@ -96,17 +96,17 @@ public class TestStatsCSV {
 		assertEquals(response.getStatus(), HttpServletResponse.SC_CREATED);
 		csvServlet.doGet(request, response);
 		assertEquals(response.getStatus(), HttpServletResponse.SC_OK);
-		Level[] level = Persistency.Level.values();
+		Level[] level = Level.values();
 		String[] info = response.getContentAsString().split("\n");
 		String[] loggers = info[0].split("\t");
 		String[] loggerNum = info[1].split("\t");
 		assertEquals(loggers[0], "logger");
-		for (int i = 1; i < Persistency.Level.values().length+1; i++) {
+		for (int i = 1; i < Level.values().length+1; i++) {
 			assertEquals(loggers[i], level[i-1].name());
 		}
 		assertEquals(loggerNum[0], json.getString("logger"));
-		for (int i = 1; i < Persistency.Level.values().length+1; i++) {
-			if (i != Persistency.Level.valueOf(json.getString("level")).ordinal()+1) {
+		for (int i = 1; i < Level.values().length+1; i++) {
+			if (i != Level.valueOf(json.getString("level")).ordinal()+1) {
 				assertEquals(loggerNum[i], "0");
 			} else {
 				assertEquals(loggerNum[i], "1");
@@ -131,17 +131,17 @@ public class TestStatsCSV {
 		servlet.doPost(request, response);
 		assertEquals(response.getStatus(), HttpServletResponse.SC_CREATED);
 		csvServlet.doGet(request, response);
-		Level[] level = Persistency.Level.values();
+		Level[] level = Level.values();
 		String[] info = response.getContentAsString().split("\n");
 		String[] loggers = info[0].split("\t");
 		String[] loggerNum = info[1].split("\t");
 		assertEquals(loggers[0], "logger");
-		for (int i = 1; i < Persistency.Level.values().length+1; i++) {
+		for (int i = 1; i < Level.values().length+1; i++) {
 			assertEquals(loggers[i], level[i-1].name());
 		}
 		assertEquals(loggerNum[0], json.getString("logger"));
-		for (int i = 1; i < Persistency.Level.values().length+1; i++) {
-			if (i != Persistency.Level.valueOf(json.getString("level")).ordinal()+1) {
+		for (int i = 1; i < Level.values().length+1; i++) {
+			if (i != Level.valueOf(json.getString("level")).ordinal()+1) {
 				assertEquals(loggerNum[i], "0");
 			} else {
 				assertEquals(loggerNum[i], "2");
@@ -170,27 +170,27 @@ public class TestStatsCSV {
 		servlet.doPost(request, response);
 		assertEquals(response.getStatus(), HttpServletResponse.SC_CREATED);
 		csvServlet.doGet(request, response);
-		Level[] level = Persistency.Level.values();
+		Level[] level = Level.values();
 		String[] info = response.getContentAsString().split("\n");
 		String[] loggers = info[0].split("\t");
 		String[] loggerNum = info[1].split("\t");
 		String[] loggerNum2 = info[2].split("\t");
 		assertEquals(loggers[0], "logger");
-		for (int i = 1; i < Persistency.Level.values().length+1; i++) {
+		for (int i = 1; i < Level.values().length+1; i++) {
 			assertEquals(loggers[i], level[i-1].name());
 		}
 		assertEquals(loggerNum[0], json.getString("logger"));
-		for (int i = 1; i < Persistency.Level.values().length+1; i++) {
-			if (i != Persistency.Level.valueOf(json.getString("level")).ordinal()+1) {
+		for (int i = 1; i < Level.values().length+1; i++) {
+			if (i != Level.valueOf(json.getString("level")).ordinal()+1) {
 				assertEquals(loggerNum[i], "0");
 			} else {
 				assertEquals(loggerNum[i], "1");
 			}
 		}
 		assertEquals(loggerNum2[0], json2.getString("logger"));
-		for (int i = 1; i < Persistency.Level.values().length+1; i++) {
-			if (i == Persistency.Level.valueOf(json2.getString("level")).ordinal()+1 
-					|| i == Persistency.Level.valueOf(json3.getString("level")).ordinal()+1) {
+		for (int i = 1; i < Level.values().length+1; i++) {
+			if (i == Level.valueOf(json2.getString("level")).ordinal()+1 
+					|| i == Level.valueOf(json3.getString("level")).ordinal()+1) {
 				assertEquals(loggerNum2[i], "1");
 			} else {
 				assertEquals(loggerNum2[i], "0");

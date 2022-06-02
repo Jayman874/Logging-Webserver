@@ -102,7 +102,7 @@ public class TestStatsHTML {
 		String body = document.body().wholeText();
 		String[] info = body.split("\n");
 		assertEquals(info[2], "logger\r");
-		Level[] level = Persistency.Level.values();
+		Level[] level = Level.values();
 		for (int i = 3; i < 11; i++) {
 			assertEquals(info[i], level[i-3].name()+"\r");
 		}
@@ -137,7 +137,7 @@ public class TestStatsHTML {
 		String body = document.body().wholeText();
 		String[] info = body.split("\n");
 		assertEquals(info[2], "logger\r");
-		Level[] level = Persistency.Level.values();
+		Level[] level = Level.values();
 		for (int i = 3; i < 11; i++) {
 			assertEquals(info[i], level[i-3].name()+"\r");
 		}
@@ -176,7 +176,7 @@ public class TestStatsHTML {
 		String body = document.body().wholeText();
 		String[] info = body.split("\n");
 		assertEquals(info[2], "logger\r");
-		Level[] level = Persistency.Level.values();
+		Level[] level = Level.values();
 		for (int i = 3; i < 11; i++) {
 			assertEquals(info[i], level[i-3].name()+"\r");
 		}
