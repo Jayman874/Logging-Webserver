@@ -85,7 +85,7 @@ public class TestStatsXLS {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		StatsXLSServlet xlsServlet = new StatsXLSServlet();
 		xlsServlet.doGet(request, response);
-		assertEquals(response.getContentType(), "application/vnd.ms-excel");
+		assertEquals(response.getContentType(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 	}
 	
 	@Test

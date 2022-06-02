@@ -27,7 +27,7 @@ public class StatsXLSServlet extends HttpServlet {
 	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/vnd.ms-excel");
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		ServletOutputStream outputStream = response.getOutputStream();
 		HashMap<String, HashMap<Level, Integer>> table = new LinkedHashMap<>();
 		for (JSONObject json : Persistency.getDatabase()) {
